@@ -1,9 +1,13 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { VideoTexture } from 'three'
 
-document.querySelector('#app').innerHTML = `<div id="container"></div>`
+document.querySelector('#app').innerHTML = 
+`<div id="container">
+  <div>
+    Drag and Drop File to Visualize
+  <div>
+</div>`
 
 let dropArea = document.getElementById('container')
 
@@ -68,15 +72,19 @@ function visualization(analyser) {
     this.createNewWave = () => {
       let matrix4 = new THREE.Matrix4
       let vector3 = new THREE.Vector3()
+      const color = new THREE.Color( 0xffffff )
+      color.convertLinearToSRGB()
+      let radius
       let i = 0
 
       for (let a = 0; a < this.numberOfRows; a++) {  
-        vector3.setComponent( 0, a * this.objectsMargin )
-        //TOTEST: maybe try Math.round on this conidition
         for (let b = 0; b < Math.round(this.byteFreq.length / 4); b++) {
-          vector3.setComponent( 1, b * this.objectsMargin)
+          radius = ( b + 10 ) * this.objectsMargin
+          vector3.setComponent( 0, radius * Math.cos( 2 * Math.PI * ( ( a + 1)  / this.numberOfRows ) ) )
+          vector3.setComponent( 1, radius * Math.sin( 2 * Math.PI * ( ( a + 1)  / this.numberOfRows ) ) )
           matrix4.setPosition( vector3 )
           this.sphere.setMatrixAt( i, matrix4 )
+          this.sphere.setColorAt( i, color )
           i++
         }
       }
@@ -98,7 +106,7 @@ function visualization(analyser) {
       const ignore2 = new THREE.Quaternion()
       let intermediary = 0;
 
-      for ( let a=this.numberOfRows * Math.round(this.byteFreq.length / 4) - 1; a > Math.round(this.byteFreq.length / 4) - 1; a--) {
+      for ( let a=this.numberOfRows * (Math.round(this.byteFreq.length / 4)); a > Math.round(this.byteFreq.length / 4) - 1; a--) {
         this.sphere.getMatrixAt ( a - Math.round(this.byteFreq.length / 4), matrix4 )
         matrix4.decompose( vector3, ignore2, ignore )
         intermediary = vector3.getComponent(2)
@@ -108,15 +116,10 @@ function visualization(analyser) {
         matrix4.setPosition( vector3 )
         this.sphere.setMatrixAt( a, matrix4 )
 
-        // this.sphere.getColorAt( a - Math.round(this.byteFreq.length / 4), color )
-        // this.sphere.setColorAt( a, color )
+        this.sphere.getColorAt( a - Math.round(this.byteFreq.length / 4), color )
+        this.sphere.setColorAt( a, color )
       }
-      // for (let a = 500; a > 0; a--) {
-      //   for (let b = 0; b < this.byteFreq.length / 4; b++) {
-      //     this.planeWave[a][b].position.z = this.planeWave[a - 1][b].position.z
-      //     this.planeWave[a][b].material = this.planeWave[a - 1][b].material
-      //   }
-      // }
+
       let average = 0
       for (let a = 1; a < this.byteFreq.length + 1; a++) {
         if (a % 4 === 0) {
@@ -128,7 +131,7 @@ function visualization(analyser) {
           matrix4.setPosition( vector3 )
           this.sphere.setMatrixAt( a/4 - 1, matrix4)
 
-          color.setRGB( ((Math.round(average)) % 255), ((Math.round(average)) % 255), ((Math.round(average)) % 255))
+          color.setRGB( average / 255, average / 255, average / 255, "srgb")
           this.sphere.setColorAt( a/4 - 1, color )
           average = 0
         }
