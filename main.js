@@ -57,7 +57,7 @@ function visualization(analyser) {
     this.objectsMargin = 0.02
     this.numberOfRows = 1000
     this.geometry = new THREE.SphereBufferGeometry(0.01, 2, 2)
-    this.material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+    this.material = new THREE.MeshBasicMaterial({ color: 0x222222 })
     this.sphere = new THREE.InstancedMesh( this.geometry, this.material, this.numberOfRows*this.byteFreq.length )
     this.sphere.instanceMatrix.setUsage( THREE.DynamicDrawUsage )
 
@@ -89,7 +89,7 @@ function visualization(analyser) {
         }
       }
 
-      camera.position.set(0, 0, 5)
+      camera.position.set(0, 0, 8)
       // controls.autoRotate = true
       // controls.autoRotateSpeed = 4.0
       controls.update()
