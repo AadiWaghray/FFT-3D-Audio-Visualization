@@ -35,9 +35,6 @@ export function CircularVisualizer ( scene ) {
                 
                 dummyObject.position.set( x, y, 0 )
                 dummyObject.updateMatrix()
-                console.log( dummyObject.position.x, 
-                    dummyObject.position.y,
-                    dummyObject.position.z)
                 
                 sphere.setMatrixAt( i, dummyObject.matrix )
                 sphere.setColorAt( i, color )
