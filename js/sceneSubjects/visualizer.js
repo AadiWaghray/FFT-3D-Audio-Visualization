@@ -48,29 +48,21 @@ export function CircularVisualizer ( scene ) {
     }
   
     const progressRotation = () => {
-        const dummyObject = new THREE.Object3D()
         const matrix4 = new THREE.Matrix4
+        const vector3 = new THREE.Vector3()
         const color = new THREE.Color()
         
         for ( let a= numberOfInstanceMesh; a > Math.round(byteFreq.length / 4) - 1; a--) {
             sphere.getMatrixAt ( a - Math.round(byteFreq.length / 4), matrix4 ) 
-            dummyObject.matrix = matrix4
-            dummyObject.updateMatrix()
-            let z = dummyObject.position.z
-            console.log( dummyObject.position.x, 
-                dummyObject.position.y,
-                dummyObject.position.z)
+            vector3.setFromMatrixPosition( matrix4 )
+            let z = vector3.getComponent( 2 )
             
             sphere.getMatrixAt ( a, matrix4 )
-            dummyObject.matrix = matrix4
-            dummyObject.updateMatrix()
-            dummyObject.position.z = z
-            dummyObject.updateMatrix()
-            console.log( dummyObject.position.x, 
-                dummyObject.position.y,
-                dummyObject.position.z)
+            vector3.setFromMatrixPosition( matrix4 )
+            vector3.setComponent( 2, z )
+            matrix4.setPosition( vector3 )
 
-            sphere.setMatrixAt( a, dummyObject.matrix )
+            sphere.setMatrixAt( a, matrix4 )
             
             sphere.getColorAt( a - Math.round(byteFreq.length / 4), color )
             sphere.setColorAt( a, color )
@@ -80,8 +72,8 @@ export function CircularVisualizer ( scene ) {
     const setFirstRadialSection = () => {
         window.analyser.getByteFrequencyData(byteFreq)
         
-        const dummyObject = new THREE.Object3D()
         const matrix4 = new THREE.Matrix4
+        const vector3 = new THREE.Vector3()
         const color = new THREE.Color()
         let average = 0
         for (let a = 1; a < byteFreq.length + 1; a++) {
@@ -89,12 +81,10 @@ export function CircularVisualizer ( scene ) {
                 average = average / 4
                 
                 sphere.getMatrixAt( a/4 -1, matrix4 )
-                dummyObject.matrix = matrix4
-                dummyObject.updateMatrix()
-                dummyObject.position.z = average/40
-                dummyObject.updateMatrix()
-
-                sphere.setMatrixAt( a/4 -1, dummyObject.matrix )
+                vector3.setFromMatrixPosition( matrix4 )
+                vector3.setComponent( 2, average/40 )
+                matrix4.setPosition( vector3 )
+                sphere.setMatrixAt( a/4 -1, matrix4 )
                 
                 color.setRGB( average / 255, average / 255, average / 255, "srgb")
                 sphere.setColorAt( a/4 - 1, color )
