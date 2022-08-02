@@ -66,13 +66,13 @@ const readFile = (file) => {
       //TODO: Check Documentation for source.noteOff
       // if( window.source ) source.noteOff(0)
       let arrayBuffer = event.target.result
-      window.audioCtx.decodeAudioData(arrayBuffer, (buffer) => {
+      window.audioCtx.decodeAudioData(arrayBuffer).then(( buffer ) => {
         window.source = audioCtx.createBufferSource()   
         source.buffer = buffer
         source.connect(analyser)
         analyser.connect(audioCtx.destination)
-        source.start(0)
         sceneManager = new SceneManager()//canvas
+        source.start(0)
         update()
       })    
     }
