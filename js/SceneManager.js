@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Vinyl } from './sceneSubjects/viny'
 import { CircularVisualizer } from './sceneSubjects/visualizer'
 
 export function SceneManager ( canvas ) {
@@ -20,7 +21,7 @@ export function SceneManager ( canvas ) {
     function buildScene () {
         const scene = new THREE.Scene() 
         
-        scene.background = new THREE.Color( 254, 1, 154 ) 
+        scene.background = new THREE.Color( 0xe5a2e6 ) 
         
         return scene
     }
@@ -44,6 +45,7 @@ export function SceneManager ( canvas ) {
 
         //Check for other arguments I need
         renderer.setSize(window.innerWidth, window.innerHeight)
+        renderer.outputEncoding = THREE.sRGBEncoding;
         document.body.appendChild(renderer.domElement)
 
         return renderer
@@ -51,7 +53,7 @@ export function SceneManager ( canvas ) {
 
     function createSceneSubjects () {
         const sceneSubjects = [
-            //Lights
+            new Vinyl( scene ),
             new CircularVisualizer( scene )
         ]
 

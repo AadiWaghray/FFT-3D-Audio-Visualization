@@ -4,7 +4,7 @@ body {
 }
 
 #container {
-  background-color: darkslategray;
+  background-color: #acdebf;
   margin: 0px;
   height: 100vh;
   width: 100vw;
@@ -14,6 +14,6 @@ body {
 }
 
 #container > * {
-  color: beige;
+  color: rgb(253, 253, 148);
   font-size: xx-large;
 }

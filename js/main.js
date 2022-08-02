@@ -65,31 +65,16 @@ const readFile = (file) => {
     fileReader.onload = (event) => {
       //TODO: Check Documentation for source.noteOff
       // if( window.source ) source.noteOff(0)
-      let arrayBuffer = event.target.result
+      let arrayBuffer = event.target.result //TODO: Make sure website doesn't crash when bad audio file is given
       window.audioCtx.decodeAudioData(arrayBuffer).then(( buffer ) => {
         window.source = audioCtx.createBufferSource()   
         source.buffer = buffer
         source.connect(analyser)
         analyser.connect(audioCtx.destination)
         sceneManager = new SceneManager()//canvas
-        source.start(0)
+        source.start(0)//TODO: Add loading animation so that there isn't an awkward wait (make loading screen match scene bg) between file load and render`
         update()
       })    
     }
     fileReader.readAsArrayBuffer(file)
-  }
-
-//HOLDING
-// import { GLTFLoader } from 'THREE/examples/jsm/loaders/GLTFLoader.js'
-//   this.loadVinyl = () => {
-//     const loader = new GLTFLoader()
-//     loader.load( './public/scene.gltf', ( gltf ) => {
-//       let vinyl = gltf.scene.children[0]
-//       vinyl.scale.set( 10, 10, 10 )
-//       scene.add( gltf.scene )
-//     }, undefined, (error) => {
-//       console.log(error)
-//     })
-//   }
-
- //TOOD: Use dummy object isntead of the tricks and hoops I am dealing with when doing matrix4 things
+}
