@@ -45,7 +45,6 @@ export function SceneManager ( canvas ) {
 
         //Check for other arguments I need
         renderer.setSize(window.innerWidth, window.innerHeight)
-        renderer.outputEncoding = THREE.sRGBEncoding;
         document.body.appendChild(renderer.domElement)
 
         return renderer

@@ -29,7 +29,7 @@ export function CircularVisualizer ( scene ) {
 
         for (let a = 0; a < numberOfRows; a++) {  
             for (let b = 0; b < Math.round(byteFreq.length / 4); b++) {
-                radius = ( b + 10 ) * objectsMargin
+                radius = ( b + 100 ) * objectsMargin
                 x = radius * Math.cos( 2 * Math.PI * ( ( a + 1)  / numberOfRows ) )
                 y = radius * Math.sin( 2 * Math.PI * ( ( a + 1)  / numberOfRows ) )
                 
